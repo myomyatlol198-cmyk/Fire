@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
@@ -9,13 +9,13 @@ Notifications.setNotificationHandler({
     shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
-    shouldShowBanner: true, 
-    shouldShowList: true,   
+    shouldShowBanner: true,
+    shouldShowList: true,
   }),
 });
 
 export function useNotifications() {
-  const [expoPushToken, setExpoPushToken] = useState("");
+  const [expoPushToken, setExpoPushToken] = useState<string>("");
   const notificationListener = useRef<Notifications.Subscription | null>(null);
   const responseListener = useRef<Notifications.Subscription | null>(null);
 
@@ -33,12 +33,8 @@ export function useNotifications() {
     });
 
     return () => {
-      if (notificationListener.current) {
-        notificationListener.current.remove();
-      }
-      if (responseListener.current) {
-        responseListener.current.remove();
-      }
+      notificationListener.current?.remove();
+      responseListener.current?.remove();
     };
   }, []);
 
@@ -46,10 +42,7 @@ export function useNotifications() {
 }
 
 async function registerForPushNotificationsAsync() {
-  if (!Device.isDevice) {
-    console.log("Must use a physical device for Push Notifications");
-    return null;
-  }
+  if (!Device.isDevice) return null;
 
   if (Platform.OS === "android") {
     await Notifications.setNotificationChannelAsync("default", {
@@ -68,19 +61,17 @@ async function registerForPushNotificationsAsync() {
     finalStatus = status;
   }
 
-  if (finalStatus !== "granted") {
-    console.log("Failed to get push token for push notification!");
-    return null;
-  }
+  if (finalStatus !== "granted") return null;
 
   const projectId = Constants.expoConfig?.extra?.eas?.projectId ?? Constants.easConfig?.projectId;
-  
+  if (!projectId) return null;
+
   try {
-    const token = (await Notifications.getDevicePushTokenAsync()).data;
-    console.log("Push Token:", token);
+    const token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
+    console.log("Expo Push Token:", token);
     return token;
   } catch (error) {
-    console.error("Error fetching device token:", error);
+    console.error("Error fetching token:", error);
     return null;
   }
 }

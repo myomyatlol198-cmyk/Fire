@@ -8,6 +8,7 @@ import Fontisto from '@expo/vector-icons/Fontisto';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../config/firebaseConfig'; 
+import { FirebaseError } from 'firebase/app';
 
 const Register = () => {
     const navigation = useNavigation();
@@ -35,7 +36,8 @@ const Register = () => {
         try {
             await createUserWithEmailAndPassword(auth, email.trim(), password);
         } catch (error) {
-            Alert.alert("Registration Failed", error.message);
+            const err = error as Error;
+            Alert.alert("Registration Failed", err.message);
         } finally {
             setLoading(false);
         }

@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, connectAuthEmulator } from "firebase/auth";
+import { initializeAuth, getReactNativePersistence, connectAuthEmulator } from "firebase/auth";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
 
 const firebaseConfig = {
@@ -13,13 +14,18 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage)
+});
+
 const db = getFirestore(app);
 
 if (__DEV__) {
-  const host = Platform.OS === 'android' ? '10.0.2.2' : 'localhost';
-  connectAuthEmulator(auth, `http://${host}:9099`);
+  const host = "192.168.100.49";
+  connectAuthEmulator(auth, `http://${host}:9099`, { disableWarnings: true });
   connectFirestoreEmulator(db, host, 8080);
+  console.log(`Connected to Firebase Emulators at http://${host}`);
 }
 
 export { auth, db };
