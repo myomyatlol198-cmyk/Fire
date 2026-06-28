@@ -4,29 +4,30 @@
     "slug": "Fire",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+
     "ios": {
       "supportsTablet": true
     },
+
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundColor": "#E6F4FE"
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.myo2222.Fire"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
+
     "extra": {
       "eas": {
         "projectId": "7282dc08-0699-4fb2-8bda-94ccc82d821f"
       }
     },
-    "owner": "myo2222"
+
+    "owner": "myo2222",
+
+    "plugins": [
+      "expo-font"
+    ]
   }
 }
