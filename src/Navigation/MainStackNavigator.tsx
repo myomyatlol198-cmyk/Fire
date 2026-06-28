@@ -6,12 +6,9 @@ import { auth, db } from '../../config/firebaseConfig';
 import { ActivityIndicator, View } from 'react-native';
 
 import Intro from '../Screens/Intro';
-import Home from '../Screens/Home';
-import Upload from '../Screens/Upload';
-import Community from '../Screens/Community';
-import Profile from '../Screens/Profile';
 import Login from '../Screens/Login';
 import Register from '../Screens/Register';
+import BottomTab from './BottomTab';
 import { useNotifications } from '../hooks/useNotifications';
 
 const Stack = createStackNavigator();
@@ -37,7 +34,8 @@ function MainStackNavigator() {
                     await setDoc(userRef, { pushToken: expoPushToken }, { merge: true });
                     console.log('Push token saved/updated successfully');
                 } catch (error) {
-                    console.error('Error saving push token to firestore:', error);
+                    const err = error as Error;
+                    console.error('Error saving push token to firestore:', err.message);
                 }
             };
             saveTokenToFirestore();
@@ -56,10 +54,7 @@ function MainStackNavigator() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             {user ? (
                 <>
-                    <Stack.Screen name='Home' component={Home} />
-                    <Stack.Screen name='Upload' component={Upload} />
-                    <Stack.Screen name='Community' component={Community} />
-                    <Stack.Screen name='Profile' component={Profile} />
+                    <Stack.Screen name='MainTabs' component={BottomTab} />
                     <Stack.Screen name='Intro' component={Intro} />
                 </>
             ) : (
