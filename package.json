@@ -17,6 +17,7 @@
     "expo-notifications": "~56.0.18",
     "expo-status-bar": "~56.0.4",
     "firebase": "^12.15.0",
+    "moti": "^0.30.0",
     "react": "19.2.3",
     "react-native": "0.85.3",
     "react-native-gesture-handler": "~2.31.1",
@@ -38,5 +39,8 @@
     "ios": "expo run:ios",
     "web": "expo start --web"
   },
-  "private": true
+  "private": true,
+  "overrides": {
+    "react": "$react"
+  }
 }

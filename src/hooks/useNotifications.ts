@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Platform } from "react-native";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
@@ -20,9 +20,13 @@ export function useNotifications() {
   const responseListener = useRef<Notifications.Subscription | null>(null);
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) => {
-      if (token) setExpoPushToken(token);
-    });
+    registerForPushNotificationsAsync()
+      .then((token) => {
+        if (token) setExpoPushToken(token);
+      })
+      .catch((err) => {
+        console.warn("Push token execution skipped:", err.message);
+      });
 
     notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
       console.log("Notification Received:", notification);
@@ -71,7 +75,6 @@ async function registerForPushNotificationsAsync() {
     console.log("Expo Push Token:", token);
     return token;
   } catch (error) {
-    console.error("Error fetching token:", error);
     return null;
   }
 }
