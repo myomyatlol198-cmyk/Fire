@@ -27,7 +27,8 @@
     "owner": "myo2222",
 
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "expo-notifications"
     ]
   }
 }

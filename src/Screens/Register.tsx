@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet, Text, TextInput, View, ScrollView } from 'react-native'
+import { TouchableOpacity, StyleSheet, Text, TextInput, View, ScrollView, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { s, vs } from 'react-native-size-matters';
@@ -6,103 +6,92 @@ import Feather from '@expo/vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import Login from './Login';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../config/firebaseConfig'; 
+import { FirebaseError } from 'firebase/app';
 
 const Register = () => {
-
     const navigation = useNavigation();
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [hidePassword, setHidePassword] = useState(true);
+    const [loading, setLoading] = useState(false);
 
+    const handleSignUp = async () => {
+        if (!email || !password || !confirmPassword || !username || !phone) {
+            Alert.alert("Error", "Please fill out all asterisk (*) fields.");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            Alert.alert("Error", "Passwords do not match.");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            await createUserWithEmailAndPassword(auth, email.trim(), password);
+        } catch (error) {
+            const err = error as Error;
+            Alert.alert("Registration Failed", err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-
         <ScrollView style={styles.container}>
-
             <View style={styles.background}>
                 <View style={styles.createIconOverlay}>
                     <Feather name="user-plus" size={s(50)} color="#FF0000" />
                 </View>
-
             </View>
 
             <Text style={styles.headerText}>Create Account</Text>
-
             <Text style={{ textAlign: 'center', color: '#FF0000', marginTop: s(10) }}>Sign up to report fire alert and maintain safety.</Text>
 
-
-            <SafeAreaView style={{ marginHorizontal: s(10),paddingBottom: vs(30) }}>
+            <SafeAreaView style={{ marginHorizontal: s(10), paddingBottom: vs(30) }}>
                 <Text style={styles.label}>Username *</Text>
                 <View style={styles.input}>
                     <Feather name="user" size={s(22)} color="#BBD5DA" style={styles.icons} />
-                    <TextInput
-                        placeholder="Enter Username"
-                        value={username}
-                        onChangeText={setUsername}
-                    />
+                    <TextInput placeholder="Enter Username" value={username} onChangeText={setUsername} />
                 </View>
 
                 <Text style={styles.label}>Email Address *</Text>
                 <View style={styles.input}>
                     <Fontisto name="email" size={s(20)} color="#BBD5DA" style={styles.icons} />
-                    <TextInput
-                        placeholder="Enter Email Address"
-                        value={email}
-                        onChangeText={setEmail}
-                        keyboardType='email-address'
-                    />
+                    <TextInput placeholder="Enter Email Address" value={email} onChangeText={setEmail} keyboardType='email-address' autoCapitalize='none' />
                 </View>
 
                 <Text style={styles.label}>Phone Number *</Text>
                 <View style={styles.input}>
                     <Feather name="phone-call" size={s(20)} color="#BBD5DA" style={styles.icons} />
-                    <TextInput
-                        placeholder="Enter Phone Number"
-                        value={phone}
-                        onChangeText={setPhone}
-                        keyboardType='numeric'
-                    />
+                    <TextInput placeholder="Enter Phone Number" value={phone} onChangeText={setPhone} keyboardType='numeric' />
                 </View>
 
                 <Text style={styles.label}>Password *</Text>
                 <View style={styles.passwordInput}>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', flex: 1 }}>
                         <Feather name="lock" size={s(20)} color="#BBD5DA" style={styles.icons} />
-                        <TextInput
-                            placeholder="Enter Password"
-                            value={password}
-                            onChangeText={setPassword}
-                        />
+                        <TextInput placeholder="Enter Password" value={password} onChangeText={setPassword} secureTextEntry={hidePassword} autoCapitalize='none' style={{ flex: 1 }} />
                     </View>
-                    <TouchableOpacity style={{}} onPress={() => setHidePassword(!hidePassword)}>
-                        <Feather
-                            name={hidePassword ? "eye-off" : "eye"}
-                            size={20}
-                            color="#BBD5DA"
-                        />
+                    <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
+                        <Feather name={hidePassword ? "eye-off" : "eye"} size={20} color="#BBD5DA" />
                     </TouchableOpacity>
                 </View>
 
                 <Text style={styles.label}>Confirm Password *</Text>
                 <View style={styles.passwordInput}>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', flex: 1 }}>
                         <Feather name="lock" size={s(20)} color="#BBD5DA" style={styles.icons} />
-                        <TextInput
-                            placeholder="Enter Password"
-                            value={password}
-                            onChangeText={setPassword}
-                        />
+                        <TextInput placeholder="Confirm Password" value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry={hidePassword} autoCapitalize='none' style={{ flex: 1 }} />
                     </View>
                     <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
-                        <Feather
-                            name={hidePassword ? "eye-off" : "eye"}
-                            size={20}
-                            color="#BBD5DA"
-                        />
+                        <Feather name={hidePassword ? "eye-off" : "eye"} size={20} color="#BBD5DA" />
                     </TouchableOpacity>
                 </View>
 
@@ -111,8 +100,10 @@ const Register = () => {
                     <Text> I agreed the <Text style={{ color: '#FF0000', fontWeight: 'bold' }}>Terms of Service</Text> and <Text style={{ color: '#FF0000', fontWeight: 'bold' }}>Privacy Policy</Text>. </Text>
                 </View>
 
-                <TouchableOpacity style={styles.btnContainer} onPress={() => navigation.navigate("Login" as never)}>
-                    <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: s(20) }}>Sign Up</Text>
+                <TouchableOpacity style={[styles.btnContainer, { opacity: loading ? 0.7 : 1 }]} onPress={handleSignUp} disabled={loading}>
+                    <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: s(20) }}>
+                        {loading ? "Creating Account..." : "Sign Up"}
+                    </Text>
                 </TouchableOpacity>
 
                 <View style={styles.orContainer}>
@@ -122,17 +113,17 @@ const Register = () => {
                 </View>
 
                 <View style={styles.signInContainer}>
-                    <Text>Already have an account</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate("Login" as never)}><Text style={styles.signIn}> Sign In</Text></TouchableOpacity>
+                    <Text>Already have an account?</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("Login" as never)}>
+                        <Text style={styles.signIn}> Sign In</Text>
+                    </TouchableOpacity>
                 </View>
-
             </SafeAreaView>
-
         </ScrollView>
     )
 }
 
-export default Register
+export default Register;
 
 const styles = StyleSheet.create({
     container: {

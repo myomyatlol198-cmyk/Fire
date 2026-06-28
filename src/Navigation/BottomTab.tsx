@@ -1,17 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import Home from '../Screens/Home'
-import Upload from '../Screens/Upload'
-import Community from '../Screens/Community'
-import Profile from '../Screens/Profile'
-import Feather from '@expo/vector-icons/Feather'
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6'
-import AntDesign from '@expo/vector-icons/AntDesign'
-import { s } from 'react-native-size-matters'
+import { StyleSheet } from 'react-native';
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Home from '../Screens/Home';
+import Upload from '../Screens/Upload';
+import Community from '../Screens/Community';
+import Profile from '../Screens/Profile';
+import Feather from '@expo/vector-icons/Feather';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { s } from 'react-native-size-matters';
 
-
-const Tab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator();
 
 const BottomTab = () => {
     return (
@@ -30,7 +29,6 @@ const BottomTab = () => {
                     borderRadius: s(20),
                 }
             }}
-            
         >
             <Tab.Screen options={{ title: 'Home', tabBarIcon: ({color}) => <Feather name="home" size={24} color={color} />}}
             name='Home' component={Home}/>
@@ -41,9 +39,9 @@ const BottomTab = () => {
             <Tab.Screen options={{ title: 'Profile', tabBarIcon: ({color}) => <AntDesign name="profile" size={24} color={color} />}}
             name='Profile' component={Profile}/>
         </Tab.Navigator>
-    )
-}
+    );
+};
 
-export default BottomTab
+export default BottomTab;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

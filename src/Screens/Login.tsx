@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { s } from 'react-native-size-matters'
@@ -6,30 +6,44 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Feather from '@expo/vector-icons/Feather';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import { useNavigation } from '@react-navigation/native';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../config/firebaseConfig';
 
 const Login = () => {
-
     const navigation = useNavigation();
-
     const [password, setPassword] = useState('');
     const [hidePassword, setHidePassword] = useState(true);
     const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const handleLogin = async () => {
+        if (!email || !password) {
+            Alert.alert("Error", "Please fill in all fields.");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            await signInWithEmailAndPassword(auth, email.trim(), password);
+        } catch (error) {
+            Alert.alert("Login Failed", error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <SafeAreaProvider style={styles.container}>
-            <View style={styles.shieldBackground}> 
-
+            <View style={styles.shieldBackground}>
                 <Feather name="shield" size={s(75)} color="#FF0000" />
                 <View style={styles.fireIconOverlay}>
                     <MaterialIcons name="local-fire-department" size={s(40)} color="#FF0000" />
                 </View>
-
             </View>
 
             <Text style={styles.headerText}>WELCOME TO QUICKFIRE</Text>
 
             <SafeAreaView>
-
                 <Text style={styles.label}>Email Address *</Text>
                 <View style={styles.input}>
                     <Fontisto name="email" size={s(20)} color="#BBD5DA" style={styles.icons} />
@@ -38,31 +52,38 @@ const Login = () => {
                         value={email}
                         onChangeText={setEmail}
                         keyboardType='email-address'
+                        autoCapitalize='none'
                     />
                 </View>
 
                 <Text style={styles.label}>Password *</Text>
                 <View style={styles.passwordInput}>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', flex: 1 }}>
                         <Feather name="lock" size={s(20)} color="#BBD5DA" style={styles.icons} />
                         <TextInput
                             placeholder="Enter Password"
                             value={password}
                             onChangeText={setPassword}
+                            secureTextEntry={hidePassword}
+                            autoCapitalize='none'
+                            style={{ flex: 1 }}
                         />
                     </View>
-                    <TouchableOpacity style={{}} onPress={() => setHidePassword(!hidePassword)}>
-                        <Feather
-                            name={hidePassword ? "eye-off" : "eye"}
-                            size={20}
-                            color="#BBD5DA"
-                        />
+                    <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
+                        <Feather name={hidePassword ? "eye-off" : "eye"} size={20} color="#BBD5DA" />
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.btnContainer} onPress={() => navigation.navigate("Register" as never)}>
-                    <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: s(20) }}>Sign In</Text>
+                <TouchableOpacity
+                    style={[styles.btnContainer, { opacity: loading ? 0.7 : 1 }]}
+                    onPress={handleLogin}
+                    disabled={loading}
+                >
+                    <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: s(20) }}>
+                        {loading ? "Signing In..." : "Sign In"}
+                    </Text>
                 </TouchableOpacity>
+
                 <View style={styles.orContainer}>
                     <View style={styles.line}></View>
                     <Text style={{ fontWeight: 'bold', color: '#FF0000', marginHorizontal: s(5) }}>Or</Text>
@@ -70,17 +91,17 @@ const Login = () => {
                 </View>
 
                 <View style={styles.signUpContainer}>
-                    <Text>Don't have an account</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate("Register" as never)}><Text style={styles.signUp}> Sign Up</Text></TouchableOpacity>
+                    <Text>Don't have an account?</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("Register" as never)}>
+                        <Text style={styles.signUp}> Sign Up</Text>
+                    </TouchableOpacity>
                 </View>
-
             </SafeAreaView>
-
         </SafeAreaProvider>
     )
 }
 
-export default Login
+export default Login;
 
 const styles = StyleSheet.create({
     container: {
