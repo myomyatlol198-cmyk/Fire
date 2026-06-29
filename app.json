@@ -5,27 +5,22 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-
     "ios": {
       "supportsTablet": true
     },
-
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.myo2222.Fire"
+      "package": "com.quick.fire"
     },
-
     "extra": {
       "eas": {
-        "projectId": "7282dc08-0699-4fb2-8bda-94ccc82d821f"
+        "projectId": "00c73c1f-ebb8-49b8-8de3-a5656eed26a7"
       }
     },
-
-    "owner": "myo2222",
-
+    "owner": "quickfire",
     "plugins": [
       "expo-font",
       "expo-notifications"
