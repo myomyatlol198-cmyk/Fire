@@ -26,7 +26,6 @@ const BottomTab = () => {
                 },
                 tabBarStyle: {
                     backgroundColor: '#ffffff',
-                    borderRadius: s(20),
                 }
             }}
         >
