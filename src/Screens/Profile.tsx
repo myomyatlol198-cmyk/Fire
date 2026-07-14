@@ -6,6 +6,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import LineTaker from '../components/LineTaker';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import Feather from '@expo/vector-icons/Feather';
 
 export type UserType = {
     profile?: string;
@@ -24,11 +25,11 @@ const user: UserType = {
 }
 
 const profileActions = [
-    { id: 1, name: 'Edit Profile', target: 'EditProfile' },
-    { id: 2, name: 'Change Password', target: 'ChangePassword' },
-    { id: 3, name: 'Privacy Settings', target: 'PrivacySettings' },
-    { id: 4, name: 'Notification Settings', target: 'Notification Settings' },
-    { id: 5, name: 'Terms of Service', target: 'Terms of Service' },
+    { id: 1, icon: <Feather name="edit" size={s(20)} color="#000000" />, name: 'Edit Profile', target: 'EditProfile' },
+    { id: 2, icon: <Feather name="lock" size={s(20)} color="#000000" />, name: 'Change Password', target: 'ChangePassword' },
+    { id: 3, icon: <Feather name="shield" size={s(20)} color="#000000" />, name: 'Privacy Settings', target: 'PrivacySettings' },
+    { id: 4, icon: <Feather name="bell" size={s(20)} color="#000000" />, name: 'Notification Settings', target: 'Notification Settings' },
+    { id: 5, icon: <Feather name="file-text" size={s(20)} color="#000000" />, name: 'Terms of Service', target: 'Terms of Service' },
 ]
 
 const Profile = () => {
@@ -43,16 +44,17 @@ const Profile = () => {
 
                 <View style={styles.profile_image_container}>
                     <Image style={styles.image} source={{ uri: user.profile }} />
-                    <TouchableOpacity style={styles.editIcon} onPress={() => navigation.navigate('Home' as never)}>
-                        <AntDesign name="edit" size={s(15)} color="#000" />
-                    </TouchableOpacity>
                 </View>
-                <View>
-
-                    <ProfileDetailsSection value={user.name} />
-                    <ProfileDetailsSection value={user.email} />
-                    <ProfileDetailsSection value={user.phone} />
-
+                <View style={styles.profileDetails}>
+                    <View style={styles.basicInfo}>
+                        <Feather name="user" size={s(20)} color="black" /><ProfileDetailsSection value={user.name} />
+                    </View>
+                    <View style={styles.basicInfo}>
+                        <Feather name="mail" size={s(20)} color="black" /><ProfileDetailsSection value={user.email} />
+                    </View>
+                    <View style={styles.basicInfo}>
+                        <Feather name="phone" size={s(20)} color="black" /><ProfileDetailsSection value={user.phone} />
+                    </View>
                 </View>
 
             </View>
@@ -63,7 +65,7 @@ const Profile = () => {
 
             <View style={styles.infoContainer}>
                 {profileActions.map((action) => (
-                    <LineTaker key={action.id} name={action.name} onPress={()=> navigation.navigate(action.target as never)} />
+                    <LineTaker key={action.id} name={action.name} iconName={action.icon} onPress={()=> navigation.navigate(action.target as never)} />
                 ))}
             </View>
 
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
     container: {
         paddingTop: s(20),
         flex: 1,
-        backgroundColor: '#ffffff',
+        backgroundColor: '#F5F5F5',
         paddingHorizontal: s(20),
     },
     title: {
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
         paddingVertical: s(10),
         borderRadius: s(15),
         flexDirection: 'row',
-        backgroundColor: '#BBD5DA',
+        backgroundColor: '#ffffff',
         alignItems: 'center',
         elevation: 2,
         shadowColor: '#0f172a',
@@ -116,23 +118,18 @@ const styles = StyleSheet.create({
         height: s(70),
         borderRadius: s(35),
     },
-    editIcon: {
-        backgroundColor: '#ffffff',
-        position: 'absolute',
-        width: s(22),
-        height: s(22),
-        borderRadius: s(15),
-        bottom: s(-5),
-        borderWidth: s(2),
-        borderColor: '#fff',
-        justifyContent: 'center',
-        alignItems: 'center',
+    profileDetails: {
+        flexDirection: 'column',
+        gap: s(5),
+    },
+    basicInfo: {
+        flexDirection: 'row',
+        gap: s(10),
     },
     infoContainer: {
-        backgroundColor: '#BBD5DA',
+        backgroundColor: '#ffffff',
         marginTop: s(20),
-        borderRadius: s(10),
-        paddingBottom: s(30),
+        borderRadius: s(15),
         elevation: 2,
         shadowColor: '#0f172a',
         shadowOffset: { width: 0, height: 4 },
@@ -142,10 +139,15 @@ const styles = StyleSheet.create({
     logoutButton: {
         flexDirection: 'row',
         marginVertical: s(30),
-        backgroundColor: '#BBD5DA',
+        backgroundColor: '#ffffff',
         paddingVertical: s(10),
         borderRadius: s(20),
         alignItems: 'center',
         justifyContent: 'center',
+        elevation: 2,
+        shadowColor: '#0f172a',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.06,
+        shadowRadius: 6,
     }
 })
