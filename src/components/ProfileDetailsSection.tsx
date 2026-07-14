@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         paddingVertical: vs(3),
     },
     text: {
-        fontSize: s(16),
+        fontSize: s(12),
         fontWeight: 'bold',
     }
 })
