@@ -114,7 +114,7 @@ export default Home;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f8fafc',
+        backgroundColor: '#F5F5F5',
     },
     header: {
         marginHorizontal: s(24),

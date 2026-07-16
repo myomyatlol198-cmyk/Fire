@@ -1,10 +1,9 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native'
+import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import { s } from 'react-native-size-matters'
 import Feather from '@expo/vector-icons/Feather';
 import FilterList from '../components/FilterList';
-import { ScrollView } from 'react-native-gesture-handler';
-
+import PostList from '../components/PostList';
 
 
 const Community = () => {
@@ -29,6 +28,8 @@ const Community = () => {
             <Text style={styles.filterText}>Filter By</Text>
 
             <FilterList />
+
+            <PostList />
         </ScrollView>
     )
 }
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F5F5F5',
-        paddingHorizontal: s(20),
+        paddingLeft: s(20),
         paddingTop: s(20),
     },
     title: {
@@ -55,6 +56,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: s(10),
         paddingVertical: s(3),
         marginTop: s(20),
+        marginRight: s(20),
         elevation: 2,
         shadowColor: '#0f172a',
         shadowOffset: { width: 0, height: 4 },
@@ -68,6 +70,6 @@ const styles = StyleSheet.create({
     filterText: {
         fontSize: s(16),
         fontWeight: 'bold',
-        marginTop: s(20),
+        marginTop: s(15),
     }
 })

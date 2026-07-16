@@ -1,7 +1,6 @@
-import { StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
+import { FlatList, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
 import React, { FC, useState } from 'react'
 import { s } from 'react-native-size-matters'
-import { FlatList } from 'react-native-gesture-handler'
 import FilterCard from './FilterCard'
 
 
@@ -18,7 +17,7 @@ const FilterList = () => {
     const [selectedId, setSelectedId] = useState('1');
 
     return (
-        <View style={styles.container}>
+        <View>
             <FlatList
                 data={FilterTopics}
                 keyExtractor={(item) => item.id}
@@ -31,7 +30,7 @@ const FilterList = () => {
                 />}
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ gap: s(10), paddingHorizontal: s(10) }}
+                contentContainerStyle={{ gap: s(10) }}
             />
         </View>
     )
@@ -41,7 +40,5 @@ const FilterList = () => {
 export default FilterList
 
 const styles = StyleSheet.create({
-    container: {
-        marginTop: s(10),
-    }
+    
 })
