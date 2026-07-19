@@ -3,6 +3,7 @@ import React, { FC, useState } from 'react'
 import { s } from 'react-native-size-matters'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Entypo from '@expo/vector-icons/Entypo';
+import { useNavigation } from '@react-navigation/native';
 
 interface PostProps {
     id: string;
@@ -14,7 +15,13 @@ interface PostProps {
     content: string;
 }
 
+
+
+
 const Post: FC<PostProps> = ({id, name, category, time, profileURL, imageURL, content}) => {  
+
+    const navigation = useNavigation();
+    const [isFire, setIsFire] = useState(false)
 
     return (
 
@@ -24,7 +31,7 @@ const Post: FC<PostProps> = ({id, name, category, time, profileURL, imageURL, co
                 <Image style={styles.profile} source={{ uri: profileURL }} />
 
                 <View style={styles.posterInfoText}>
-                    <Text style={styles.posterName}> {name}</Text>
+                    <Text style={styles.posterName}>{name}</Text>
                     <Text style={styles.postedOn}>{time}</Text>
                 </View>
 
@@ -40,8 +47,8 @@ const Post: FC<PostProps> = ({id, name, category, time, profileURL, imageURL, co
             </View>
 
             <View style={styles.reaction}>
-                <TouchableOpacity ><MaterialCommunityIcons name="fire" size={s(26)} color={'#BBD5DA'} /></TouchableOpacity>
-                <TouchableOpacity ><Entypo name="message" size={s(24)} color="#BBD5DA" /></TouchableOpacity>
+                <TouchableOpacity  onPress={()=> setIsFire(!isFire)}><MaterialCommunityIcons name="fire" size={s(26)} color={isFire? '#FF0000': '#BBD5DA'} /></TouchableOpacity>
+                <TouchableOpacity onPress={()=> navigation.navigate('Comment' as never)}><Entypo name="message" size={s(24)} color="#BBD5DA" /></TouchableOpacity>
             </View>
         </View>
     )

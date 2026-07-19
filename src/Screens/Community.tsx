@@ -11,6 +11,7 @@ const Community = () => {
     const [searchText, setSearchText] = useState('');
 
     return (
+
         <ScrollView style={styles.container}>
             <Text style={styles.title}>Community</Text>
 
@@ -31,6 +32,7 @@ const Community = () => {
 
             <PostList />
         </ScrollView>
+
     )
 }
 

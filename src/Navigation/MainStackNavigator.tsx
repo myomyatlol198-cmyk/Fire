@@ -13,6 +13,7 @@ import Intro from '../Screens/Intro';
 import Login from '../Screens/Login';
 import Register from '../Screens/Register';
 import BottomTab from './BottomTab';
+import Comment from '../components/Comment'
 // import { useNotifications } from '../hooks/useNotifications';
 
 const Stack = createStackNavigator();
@@ -70,6 +71,7 @@ function MainStackNavigator() {
                     <Stack.Screen name="Login" component={Login} />
                 </>
             )}
+
         </Stack.Navigator>
     );
 }

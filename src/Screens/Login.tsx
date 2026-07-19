@@ -26,7 +26,8 @@ const Login = () => {
         try {
             await signInWithEmailAndPassword(auth, email.trim(), password);
         } catch (error) {
-            Alert.alert("Login Failed", error.message);
+            const message = error instanceof Error ? error.message : 'An unexpected error occurred.';
+            Alert.alert("Login Failed", message);
         } finally {
             setLoading(false);
         }
