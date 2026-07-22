@@ -48,7 +48,7 @@ const Post: FC<PostProps> = ({id, name, category, time, profileURL, imageURL, co
 
             <View style={styles.reaction}>
                 <TouchableOpacity  onPress={()=> setIsFire(!isFire)}><MaterialCommunityIcons name="fire" size={s(26)} color={isFire? '#FF0000': '#BBD5DA'} /></TouchableOpacity>
-                <TouchableOpacity onPress={()=> navigation.navigate('Comment' as never)}><Entypo name="message" size={s(24)} color="#BBD5DA" /></TouchableOpacity>
+                <TouchableOpacity onPress={()=> navigation.navigate('Comment')}><Entypo name="message" size={s(24)} color="#BBD5DA" /></TouchableOpacity>
             </View>
         </View>
     )
