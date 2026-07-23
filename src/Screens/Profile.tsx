@@ -91,6 +91,9 @@ const styles = StyleSheet.create({
         fontSize: s(20),
         fontWeight: 'bold',
         marginTop: s(50),
+        textShadowColor:'#838181',
+        textShadowOffset: {width: s(1), height: s(1)},
+        textShadowRadius: s(5),
     },
     profile_container: {
         marginTop: s(25),

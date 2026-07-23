@@ -49,6 +49,9 @@ const styles = StyleSheet.create({
         marginTop: s(50),
         fontSize: s(20),
         fontWeight: 'bold',
+        textShadowColor:'#838181',
+        textShadowOffset: {width: s(1), height: s(1)},
+        textShadowRadius: s(5),
     },
     searchBar: {
         flexDirection: 'row',
